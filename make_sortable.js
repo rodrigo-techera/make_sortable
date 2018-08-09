@@ -1,48 +1,49 @@
 document.addEventListener('DOMContentLoaded', function() {
 	let draggingTarget = false;
-	let tempElement = false;
-
+	
 	document.addEventListener('dragstart', function (e) {
 		if(e.target.draggable) {
 			e.dataTransfer.setData('text/html', null);
 
-			tempElement = e.target.cloneNode(true);
-			
 			draggingTarget = e.target;
 			draggingTarget.previousDisplay = draggingTarget.style.display;
-			draggingTarget.style.display = 'none';
-
-
 		}
 	}, false);
-
+	
 	document.addEventListener('dragover', function (e) {
 		e.preventDefault(); //allowing drop event
 
 		if(draggingTarget) {
-			//draggingTarget.style.top = (e.clientY||e.pageY) - Math.round(draggingTarget.offsetHeight/2);
-			//draggingTarget.style.left = (e.clientX||e.pageX) - Math.round(draggingTarget.offsetWidth/2);
+			//dragHandler.style.top = (e.clientY||e.pageY) - Math.round(dragHandler.offsetHeight/2);
+			//dragHandler.style.left = (e.clientX||e.pageX) - Math.round(dragHandler.offsetWidth/2);
 
 			if(typeof e.target.sortable !== 'undefined') {
 				//dragging over sortable container
 				e.target.classList.add(e.target.sortable.overContainerClass);
-			} else if(typeof e.target.parentNode.sortable !== 'undefined' && e.target != tempElement) {
+			} else if(typeof e.target.parentNode.sortable !== 'undefined' && e.target != draggingTarget) {
 				//dragging over sortable element
 				
 				const refPoint = elementPosition(e.target).top + Math.round(e.target.clientHeight/2);
 				if(e.clientY >= refPoint) {
 					//insert placeholder after
-					if(typeof e.target.nextSibling != tempElement) {
-						e.target.parentNode.insertBefore(tempElement, e.target.nextSibling);
+					if(typeof e.target.nextSibling != draggingTarget) {
+						e.target.parentNode.insertBefore(draggingTarget, e.target.nextSibling);
 					}
 				} else {
 					//insert placeholder before
-					if(typeof e.target.previousSibling != tempElement) {
-						e.target.parentNode.insertBefore(tempElement, e.target);
+					if(typeof e.target.previousSibling != draggingTarget) {
+						e.target.parentNode.insertBefore(draggingTarget, e.target);
 					}
 				}
 			}
 		}
+	}, false);
+	
+	document.addEventListener('dragleave', function (e) {
+		//console.log('dragleave', e);
+		//if(typeof e.target.sortable !== 'undefined') {
+		//	e.target.classList.remove(e.target.sortable.overContainerClass);
+		//}
 	}, false);
 
 	document.addEventListener('dragend', function (e) {
@@ -50,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		draggingTarget.style.display = draggingTarget.previousDisplay;
 		draggingTarget = false;
-		tempElement = false;
+		//tempElement = false;
 	}, false);
 
 	document.addEventListener('drop', function (e) {
@@ -61,11 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			sortableContainer = e.target;
 		else if(typeof e.target.parentNode.sortable !== 'undefined')
 			sortableContainer = e.target.parentNode;
-
-		if(sortableContainer) {
-			sortableContainer.insertBefore(draggingTarget, tempElement);
-			sortableContainer.removeChild(tempElement);
-		}
 	}, false);
 });
 

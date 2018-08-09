@@ -3,7 +3,7 @@ Sortable Lists with Ecma Script 6
 
 Example:
 
-<script type="text/javascript" src="drag_and_drop_es6.js"></script>
+<script type="text/javascript" src="make_sortable.js"></script>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 		makeSortable({
