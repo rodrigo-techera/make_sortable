@@ -1,9 +1,11 @@
 # make_sortable (Beta)
-Sortable Lists with Ecma Script 6
+Sortable lists with Ecma Script 6
 
-Example:
-
+### Example:
+```
+<!-- Include the sortable code -->
 <script type="text/javascript" src="drag_and_drop_es6.js"></script>
+<!-- Instance the elements -->
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 		makeSortable({
@@ -28,3 +30,4 @@ Example:
 	<li>item 9</li>
 	<li>item 10</li>
 </ul>
+```
