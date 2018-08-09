@@ -4,7 +4,7 @@ Sortable lists with Ecma Script 6
 ### Example:
 ```
 <!-- Include the sortable code -->
-<script type="text/javascript" src="drag_and_drop_es6.js"></script>
+<script type="text/javascript" src="make_sortable.js"></script>
 <!-- Instance the elements -->
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
