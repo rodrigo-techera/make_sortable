@@ -38,7 +38,7 @@ function makeSortable(options_param) {
 			}, false);
 
 			container.addEventListener('drop', function (e) {
-				//pass
+				this.classList.remove(this.sortable.overContainerClass);
 			}, false);
 
 			container.addEventListener('dragover', function (e) {
