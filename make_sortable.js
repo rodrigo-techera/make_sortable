@@ -41,36 +41,33 @@ function makeSortable(options_param) {
 				//pass
 			}, false);
 
-			[].slice.call(container.children).forEach(element => {
-				element.draggable = true;
-				element.sortableContainer = container;
-
-				element.addEventListener('dragover', function (e) {
-					e.preventDefault(); //allowing drop event
+			container.addEventListener('dragover', function (e) {
+				e.preventDefault(); //allowing drop event
+				
+				if(draggingTarget) {
+					this.classList.add(this.sortable.overContainerClass);
 					
-					if(draggingTarget) {
-						//dragHandler.style.top = (e.clientY||e.pageY) - Math.round(dragHandler.offsetHeight/2);
-						//dragHandler.style.left = (e.clientX||e.pageX) - Math.round(dragHandler.offsetWidth/2);
-
-						this.parentNode.classList.add(this.parentNode.sortable.overContainerClass);
-						
-						if(this != draggingTarget) {
-							//dragging over sortable element
-							const refPoint = elementPosition(this).top + Math.round(this.clientHeight/2);
-							if(e.clientY >= refPoint) {
-								//insert placeholder after
-								if(this.nextSibling != draggingTarget) {
-									this.parentNode.insertBefore(draggingTarget, this.nextSibling);
-								}
-							} else {
-								//insert placeholder before
-								if(this.previousSibling != draggingTarget) {
-									this.parentNode.insertBefore(draggingTarget, this);
-								}
+					if(e.target.draggable && e.target != draggingTarget) {
+						//dragging over sortable element
+						const refPoint = elementPosition(e.target).top + Math.round(e.target.clientHeight/2);
+						if(e.clientY >= refPoint) {
+							//insert element after
+							if(e.target.nextSibling != draggingTarget) {
+								e.target.parentNode.insertBefore(draggingTarget, e.target.nextSibling);
+							}
+						} else {
+							//insert element before
+							if(e.target.previousSibling != draggingTarget) {
+								e.target.parentNode.insertBefore(draggingTarget, e.target);
 							}
 						}
 					}
-				}, false);
+				}
+			}, false);
+
+			[].slice.call(container.children).forEach(element => {
+				element.draggable = true;
+				element.sortableContainer = container;
 			});
 		});
 	}
